@@ -23,7 +23,31 @@ addBtn.onclick = function () {
 }
 
 function insertRowIntoTable(data) {
+    const table = document.querySelector('table tbody');
+    const isTableData = table.querySelector('.no-data');
 
+    let tableHtml = "<tr>";
+
+    for (var key in data) {
+        if (data.hasOwnProperty(key)) {
+            if (key === 'dateAdded') {
+                data[key] = new Date(data[key].toLocaleString());
+            }
+            tableHtml += `<td>${data[key]}</td>`;
+        }
+    }
+
+    tableHtml += `<td><button class="delete-row-btn" data-id=${data.id}>Delete</td>`;
+    tableHtml += `<td><button class="edit-row-btn" data-id=${data.id}>Edit</td>`;
+
+    tableHtml += "</tr>";
+
+    if (isTableData) {
+        table.innerHTML = tableHtml;
+    } else {
+        const newRow = table.insertRow();
+        newRow.innerHTML = tableHtml;
+    }
 }
 
 function loadHTMLTable(data) {
@@ -39,9 +63,9 @@ function loadHTMLTable(data) {
         tableHtml += "<tr>";
         tableHtml += `<td>${id}</td>`;
         tableHtml += `<td>${name}</td>`;
-        tableHtml += `<td>${date_added}</td>`;
+        tableHtml += `<td>${new Date(date_added).toLocaleString()}</td>`;
         tableHtml += `<td><button class="delete-row-btn" data-id=${id}>Delete</td>`;
-        tableHtml += `<td><button class="added-row-btn" data-id=${id}>Edit</td>`;
+        tableHtml += `<td><button class="edit-row-btn" data-id=${id}>Edit</td>`;
         tableHtml += "</tr>";
     });
 

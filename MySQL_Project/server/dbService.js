@@ -45,15 +45,18 @@ class DbService {
         try {
             const dateAdded = new Date();
             const insertId = await new Promise((resolve, reject) => {
-                const query = "INSERT INTO names (name, date_added) VALUES (?, ?);";
+                const query = "INSERT INTO names (name, date_added) VALUES (?,?);";
 
                 connection.query(query, [name, dateAdded] , (err, result) => {
                     if (err) reject(new Error(err.message));
                     resolve(result.insertId);
                 })
             });
-            console.log(insertId);
-            // return response;
+            return {
+                id: insertId,
+                name: name,
+                dateAdded: dateAdded
+            };
         } catch (error) {
             console.log(error);
         }
